@@ -39,6 +39,6 @@ jobs:
 
   release:
     needs: check-version
-    uses: LucianErick/trivy-plugin/.github/workflows/release-go.yaml@main
+    uses: LucianErick/trivy-plugin/.github/workflows/go-release.yaml@main
     with:
       next-version: '${{ needs.check-version.outputs.next-version }}'
