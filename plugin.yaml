@@ -1,6 +1,6 @@
 name: "VulnVisor"
 repository: github.com/LucianErick/VulnVisor
-version: "0.0.0"
+version: "0.0.1"
 usage: scan targets into a html dashboard file
 description: |-
   A Trivy plugin that scans and outputs the results to a html dashboard file
