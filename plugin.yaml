@@ -4,7 +4,7 @@ version: "0.0.0"
 usage: scan targets into a html dashboard file
 description: |-
   A Trivy plugin that scans and outputs the results to a html dashboard file
-  trivy vulnvisor [-h,--help] command target filename
+  trivy vulnvisor [-h,--help] command target filename.
 
 platforms:
   - selector:
