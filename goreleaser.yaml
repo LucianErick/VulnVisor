@@ -48,7 +48,8 @@ archives:
       - README.md
       - LICENSE
       - plugin.yaml
-      - src/index.html
+      - first.html
+      - second.html
     format_overrides:
       - goos: windows
         format: zip

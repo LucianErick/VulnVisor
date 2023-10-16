@@ -1,12 +1,12 @@
-const gulp = require("gulp");
-const cleanCSS = require("gulp-clean-css");
-const inline = require("gulp-inline");
-const uglify = require("gulp-uglify");
-const htmlSplit = require('gulp-htmlsplit');
+import { src, task, dest } from "gulp";
+
+import cleanCSS from "gulp-clean-css";
+import inline from "gulp-inline";
+import uglify from "gulp-uglify";
+import htmlSplit from 'gulp-htmlsplit';
 
 function makeInline() {
-	return gulp
-		.src("./src/index.html")
+	return src("./src/index.html")
 		.pipe(
 			inline({
 				base: "./src",
@@ -18,14 +18,14 @@ function makeInline() {
 		);
 }
 
-gulp.task('default', function () {
+task('default', function () {
 	return makeInline()
 		.pipe(htmlSplit())
-		.pipe(gulp.dest("./dist"));
+		.pipe(dest("./dist"));
 })
 
 
-gulp.task('single', function () {
+task('single', function () {
 	return makeInline()
-		.pipe(gulp.dest("./dist"));
+		.pipe(dest("./dist"));
 })
