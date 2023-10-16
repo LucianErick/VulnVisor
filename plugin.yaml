@@ -1,4 +1,4 @@
-name: "VulnVisor"
+name: "vulnvisor"
 repository: github.com/LucianErick/VulnVisor
 version: "0.0.1"
 usage: scan targets into a html dashboard file
