@@ -21,11 +21,11 @@ function makeInline() {
 task('default', function () {
 	return makeInline()
 		.pipe(htmlSplit())
-		.pipe(dest("./dist"));
+		.pipe(dest("."));
 })
 
 
 task('single', function () {
 	return makeInline()
-		.pipe(dest("./dist"));
+		.pipe(dest("."));
 })
