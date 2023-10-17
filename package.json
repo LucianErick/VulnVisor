@@ -1,6 +1,6 @@
 {
     "scripts": {
-      "build": "gulp",
+      "build": "gulp default",
       "build-single": "gulp single"
     },
     "devDependencies": {
