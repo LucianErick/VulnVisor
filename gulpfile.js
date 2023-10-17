@@ -21,11 +21,11 @@ function makeInline() {
 gulp.task('default', function () {
 	return makeInline()
 		.pipe(htmlSplit())
-		.pipe(gulp.dest("./dist"));
+		.pipe(gulp.dest("."));
 })
 
 
 gulp.task('single', function () {
 	return makeInline()
-		.pipe(gulp.dest("./dist"));
+		.pipe(gulp.dest("."));
 })
