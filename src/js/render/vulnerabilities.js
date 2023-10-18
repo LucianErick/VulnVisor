@@ -40,9 +40,6 @@ function fillVulnerabilitiesTable(result) {
 		
 		const vulnerability = resultTableRow.querySelector(".vuln");
 		vulnerability.textContent = vuln.VulnerabilityID;
-		
-		const v2Score = resultTableRow.querySelector(".v2-score");
-		v2Score.textContent = vuln.CVSS.nvd.V2Score;
 
 		if (vuln.CVSS.nvd.V2Score || vuln.CVSS.redhat.V2Score) {
 			const v2Score = resultTableRow.querySelector(".v2-score");
