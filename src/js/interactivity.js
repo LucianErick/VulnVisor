@@ -54,6 +54,7 @@ function insertAfter(referenceNode, newNode) {
       ".v2-score",
       ".v3-score",
       ".severity",
+      ".fix-version",
       ".pkg-version",
       ".pkg-key-name",
       ".pkg-key-version",

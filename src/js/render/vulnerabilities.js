@@ -59,6 +59,9 @@ function fillVulnerabilitiesTable(result) {
 		const pkgVersion = resultTableRow.querySelector(".pkg-version");
 		pkgVersion.textContent = vuln.InstalledVersion;
 		
+		const fixVersion = resultTableRow.querySelector(".fix-version");
+		fixVersion.textContent = vuln.FixedVersion;
+
 		const links = resultTableRow.querySelector(".links");
 		if (vuln.References) {
 			vuln.References.forEach((ref) => {
