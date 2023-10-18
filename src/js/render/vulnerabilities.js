@@ -33,6 +33,8 @@ function fillVulnerabilitiesTable(result) {
 		vulnerabilitiesTable.querySelector(".header__title");
 	const vulnerabilitiesTableBody = vulnerabilitiesTable.querySelector("tbody");
 	result.Vulnerabilities.forEach((vuln) => {
+		console.log(vuln)
+		alert(vuln)
 		const resultTableRow = tableRowTemplate.content.cloneNode(true);
 		const pkgName = resultTableRow.querySelector(".pkg-name");
 		pkgName.textContent = vuln.PkgName;
