@@ -41,15 +41,14 @@ function fillVulnerabilitiesTable(result) {
 		const vulnerability = resultTableRow.querySelector(".vuln");
 		vulnerability.textContent = vuln.VulnerabilityID;
 
-		if (vuln.CVSS.nvd.V2Score || vuln.CVSS.redhat.V2Score) {
+		const cvssArrayKeys = Object.keys(vuln.CVSS);
+		cvssArrayKeys.map((key) => {
+			const obj = vuln.CVSS[key]
 			const v2Score = resultTableRow.querySelector(".v2-score");
-			v2Score.textContent = vuln.CVSS.nvd.V2Score ? vuln.CVSS.nvd.V2Score : vuln.CVSS.redhat.V2Score;
-		}
-		
-		if (vuln.CVSS.nvd.V3Score || vuln.CVSS.redhat.V3Score) {
+			v2Score.textContent = obj.V2Score ?? 0
 			const v3Score = resultTableRow.querySelector(".v3-score");
-			v3Score.textContent = vuln.CVSS.nvd.V3Score ? vuln.CVSS.nvd.V3Score : vuln.CVSS.redhat.V3Score;
-		}
+			v3Score.textContent = obj.V3Score ?? 0
+		})
 
 		const vulnTitle = resultTableRow.querySelector(".vuln-title");
 		vulnTitle.textContent = vuln.Title;
