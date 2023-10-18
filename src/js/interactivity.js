@@ -50,6 +50,9 @@ function insertAfter(referenceNode, newNode) {
     const cellClasses = [
       ".pkg-name",
       ".vuln",
+      ".vuln-title",
+      ".v2-score",
+      ".v3-score",
       ".severity",
       ".pkg-version",
       ".pkg-key-name",

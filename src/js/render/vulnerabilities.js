@@ -33,19 +33,23 @@ function fillVulnerabilitiesTable(result) {
 		vulnerabilitiesTable.querySelector(".header__title");
 	const vulnerabilitiesTableBody = vulnerabilitiesTable.querySelector("tbody");
 	result.Vulnerabilities.forEach((vuln) => {
-		console.log(vuln)
-		alert(vuln)
 		const resultTableRow = tableRowTemplate.content.cloneNode(true);
 		const pkgName = resultTableRow.querySelector(".pkg-name");
 		pkgName.textContent = vuln.PkgName;
 		const vulnerability = resultTableRow.querySelector(".vuln");
 		vulnerability.textContent = vuln.VulnerabilityID;
+		const v2Score = resultTableRow.querySelector(".v2-score");
+		v2Score.textContent = vuln.CVSS.nvd.V2Score;
+		const v3Score = resultTableRow.querySelector(".v3-score");
+		v3Score.textContent = vuln.CVSS.nvd.V3Score;
+		const vulnTitle = resultTableRow.querySelector(".vuln-title");
+		vulnTitle.textContent = vuln.CVSS.nvd.Title;
 		const severity = resultTableRow.querySelector(".severity");
 		severity.textContent = vuln.Severity;
 		const pkgVersion = resultTableRow.querySelector(".pkg-version");
 		pkgVersion.textContent = vuln.InstalledVersion;
-		const fixVersion = resultTableRow.querySelector(".fix-version");
-		fixVersion.textContent = vuln.FixedVersion;
+		
+		
 		const links = resultTableRow.querySelector(".links");
 		if (vuln.References) {
 			vuln.References.forEach((ref) => {
