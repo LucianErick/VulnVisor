@@ -25,7 +25,7 @@ function getMiscResultTables(topMisconfiguration) {
 			resultTableBody.append(resultTableRow);
 		});
 		/*filling table*/
-		resultTableHeader.textContent = result.Type;
+		resultTableHeader.textContent = 'Source: ' + result.Type;
 		return resultTable;
 	});
 }

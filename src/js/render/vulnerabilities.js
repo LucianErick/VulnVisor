@@ -74,6 +74,6 @@ function fillVulnerabilitiesTable(result) {
 		}
 		vulnerabilitiesTableBody.append(resultTableRow);
 	});
-	vulnerabilitiesTableHeader.textContent = result.Type;
+	vulnerabilitiesTableHeader.textContent = 'Source: ' + result.Type;
 	return vulnerabilitiesTable;
 }

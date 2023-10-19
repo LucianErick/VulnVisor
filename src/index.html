@@ -20,6 +20,12 @@
             title="Search by package, vulnerability id, severity, installed version"
             class="filter_bar__filter_name search"
           />
+          <div class="tabs">
+            <button id="cves-tab" class="tab-button active">CVE's</button>
+            <button id="packages-tab" class="tab-button">Packages</button>
+            <button id="secrets-tab" class="tab-button">Secrets</button>
+            <button id="misc-tab" class="tab-button">Misconfigurations</button>
+          </div>
         </div>
       </main>
       <template id="top-vuln">
@@ -31,7 +37,7 @@
         <h2 class="top-misc-title"></h2>
         <div class="tables-container"></div>
       </template>
-      <template id="table">
+      <template id="table cves-content" class="tab-content">
         <div class="header">
           <h3 class="header__title ta-center"></h3>
         </div>
@@ -120,7 +126,7 @@
           </table>
         </div>
       </template>
-      <template id="misc-table">
+      <template id="misc-table misc-content" class="tab-content">
         <div class="header">
           <h3 class="header__title ta-center"></h3>
         </div>
@@ -232,7 +238,7 @@
           <div class="secret-results__content"></div>
         </div>
       </template>
-      <template id="secret">
+      <template id="secret secrets-content" class="tab-content">
         <div class="secret">
           <div class="secret__head">
             <span class="secret__severity"></span>
@@ -255,7 +261,7 @@
           </div>
         </div>
       </template>
-      <template id="pkgs-table">
+      <template id="pkgs-table packages-content" class="tab-content">
         <div class="header">
           <h3 class="header__title ta-center">Packages</h3>
         </div>
