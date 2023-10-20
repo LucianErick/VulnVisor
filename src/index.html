@@ -3,6 +3,12 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="index.css" />
     <title>Trivy Report</title>
   </head>
@@ -22,9 +28,9 @@
           />
           <div class="tabs">
             <button id="cves-tab" class="tab-button active">CVE's</button>
+            <button id="misc-tab" class="tab-button">Misconfigurations</button>
             <button id="packages-tab" class="tab-button">Packages</button>
             <button id="secrets-tab" class="tab-button">Secrets</button>
-            <button id="misc-tab" class="tab-button">Misconfigurations</button>
           </div>
         </div>
       </main>
@@ -37,7 +43,7 @@
         <h2 class="top-misc-title"></h2>
         <div class="tables-container"></div>
       </template>
-      <template id="table cves-content" class="tab-content">
+      <template id="table">
         <div class="header">
           <h3 class="header__title ta-center"></h3>
         </div>
@@ -110,7 +116,7 @@
                   </svg>
                 </th>
                 <th data-type="string" data-sortable="false">
-                  <span> Links </span>
+                  <span> References </span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -122,11 +128,11 @@
                 </th>
               </tr>
             </thead>
-            <tbody data-main="true"></tbody>
+            <tbody data-main="true" class="filterable"></tbody>
           </table>
         </div>
       </template>
-      <template id="misc-table misc-content" class="tab-content">
+      <template id="misc-table">
         <div class="header">
           <h3 class="header__title ta-center"></h3>
         </div>
@@ -191,7 +197,7 @@
               </th>
             </tr>
           </thead>
-          <tbody data-main="true"></tbody>
+          <tbody data-main="true" class="filterable"></tbody>
         </table>
       </template>
       <template id="empty-vuln-header">
@@ -238,7 +244,7 @@
           <div class="secret-results__content"></div>
         </div>
       </template>
-      <template id="secret secrets-content" class="tab-content">
+      <template id="secret">
         <div class="secret">
           <div class="secret__head">
             <span class="secret__severity"></span>
@@ -261,7 +267,7 @@
           </div>
         </div>
       </template>
-      <template id="pkgs-table packages-content" class="tab-content">
+      <template id="pkgs-table">
         <div class="header">
           <h3 class="header__title ta-center">Packages</h3>
         </div>
