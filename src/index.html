@@ -15,10 +15,12 @@
   <body>
     <div class="wrapper">
       <main id="root">
-        <h1 id="report-title">
-          Trivy Report - <span class="report-title__target"></span> -
-          <span id="title-time"></span>
-        </h1>
+        <div class="main-header">
+          <h1 id="report-title">
+            Trivy Report - <span class="report-title__target"></span> -
+            <span id="title-time"></span>
+          </h1>
+        </div>
         <div class="filter_bar">
           <input
             type="text"
@@ -52,68 +54,78 @@
             <thead>
               <tr class="sub-header">
                 <th data-type="string" data-sortable="true">
-                  <span> Package </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
-                  </svg>
+                  <div class="th-centered">
+                    <span> Package </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
+                    </svg>
+                  </div>
                 </th>
                 <th data-type="string" data-sortable="true">
-                  <span> Vulnerability ID </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
-                  </svg>
+                  <div class="th-centered">
+                    <span> Vulnerability ID </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
+                    </svg>
+                  </div>
                 </th>
-                <th data-type="string" data-sortable="true">
+                <th data-type="string" data-sortable="false">
                   <span> Description </span>
                 </th>
                 <th data-type="string" data-sortable="true">
-                  <span> CVSS (v2) </span>
+                  <div class="th-centered">
+                    <span> CVSS (v2) </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
+                    </svg>
+                  </div>
                 </th>
                 <th data-type="string" data-sortable="true">
-                  <span> CVSS (v3)</span>
+                  <div class="th-centered">
+                    <span> CVSS (v3) </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
+                    </svg>
+                  </div>
                 </th>
                 <th data-type="severity" data-sortable="true">
-                  <span> Severity </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
-                  </svg>
+                  <div class="th-centered">
+                    <span> Severity </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
+                    </svg>
+                  </div>
                 </th>
-                <th data-type="string" data-sortable="true">
+                <th data-type="string" data-sortable="false">
                   <span> Installed Version </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
-                  </svg>
                 </th>
                 <th data-type="string" data-sortable="false">
                   <span> Fixed Version </span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z" />
-                  </svg>
                 </th>
                 <th data-type="string" data-sortable="false">
                   <span> References </span>

@@ -38,7 +38,7 @@ function insertAfter(referenceNode, newNode) {
                 "data-more-links",
                 "on" === expanded ? "off" : "on"
             );
-            expanded ? toggleLink.innerText = "Hide references" : null
+            expanded ? toggleLink.innerText = "Hide references" : 'Show references'
             return false;
           };
         });
