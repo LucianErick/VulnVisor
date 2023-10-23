@@ -79,11 +79,6 @@ function fillResults(result) {
       const topVulns = getTopVulnerabilities();
       root.append(...topVulns);
     }
-  
-    if (trivyData.Misconfigurations) {
-      const miscResultTables = getTopMiscResultTables();
-      root.append(...miscResultTables);
-    }
     renderCreatedAt();
   }
   

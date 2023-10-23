@@ -1,6 +1,49 @@
-function removeActiveClasses() {
+function hideCvesTable() {
+    const tables = document.getElementsByClassName("tables");
+    Object.values(tables).forEach((tableElement) => {
+        Object.values(tableElement.children).forEach((table) => {
+        if (table.className !== "pkgs-table") {
+          table.style.display = "none";
+        }
+      });
+    })
+  }
+
+  function hidePkgsTable() {
+    const tables = document.getElementsByClassName("tables");
+    Object.values(tables).forEach((tableElement) => {
+        Object.values(tableElement.children).forEach((table) => {
+        if (table.className === "pkgs-table") {
+          table.style.display = "none";
+        }
+      });
+    })
+  }
+
+  function getCvesTable() {
+    const tables = document.getElementsByClassName("tables");
+    Object.values(tables).forEach((tableElement) => {
+        Object.values(tableElement.children).forEach((table) => {
+        if (table.className !== "pkgs-table") {
+          table.style.display = "block";
+        }
+      });
+    })
+  }
+
+  function getPkgsTable() {
+    const tables = document.getElementsByClassName("tables");
+    Object.values(tables).forEach((tableElement) => {
+        Object.values(tableElement.children).forEach((table) => {
+        if (table.className === "pkgs-table") {
+          table.style.display = "block";
+        }
+      });
+    })
+  }
+  function removeActiveClasses() {
     const tabButtons = document.querySelectorAll(".tab-button");
-    const cvesContent = document.getElementsByClassName("tables");
+    const tables = document.querySelectorAll("tables");
     const secretsContent =
       document.getElementsByClassName("secret-results");
 
@@ -11,42 +54,6 @@ function removeActiveClasses() {
     Object.values(secretsContent).forEach(
       (table) => (table.style.display = "none")
     );
-  }
-
-  function hideCvesTable() {
-    const tables = document.getElementsByClassName("tables");
-    Object.values(tables[0].children).forEach((table) => {
-      if (table.className !== "pkgs-table") {
-        table.style.display = "none";
-      }
-    });
-  }
-
-  function hidePkgsTable() {
-    const tables = document.getElementsByClassName("tables");
-    Object.values(tables[0].children).forEach((table) => {
-      if (table.className === "pkgs-table") {
-        table.style.display = "none";
-      }
-    });
-  }
-
-  function getCvesTable() {
-    const tables = document.getElementsByClassName("tables");
-    Object.values(tables[0].children).forEach((table) => {
-      if (table.className !== "pkgs-table") {
-        table.style.display = "block";
-      }
-    });
-  }
-
-  function getPkgsTable() {
-    const tables = document.getElementsByClassName("tables");
-    Object.values(tables[0].children).forEach((table) => {
-      if (table.className === "pkgs-table") {
-        table.style.display = "table";
-      }
-    });
   }
 
   function filterByType() {
