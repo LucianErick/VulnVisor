@@ -15,23 +15,24 @@ function countVulnerabilitiesBySeverityAndType(trivyData) {
     }
 
     const vulnerabilities = entry.Vulnerabilities;
-
-    vulnerabilities.forEach((vulnerability) => {
-      const severity = vulnerability.Severity;
-      countsByType[type][severity]++;
-    });
+    if (vulnerabilities) {
+      vulnerabilities.forEach((vulnerability) => {
+        const severity = vulnerability.Severity;
+        countsByType[type][severity]++;
+      });
+    }
   });
 
   return countsByType;
 }
 
 function updateTableWithCounts(countsByType) {
-  const table = document.getElementById("minha-tabela");
+  const table = document.getElementById("groupSeverityBySource");
 
   for (const type in countsByType) {
     if (countsByType.hasOwnProperty(type)) {
       const counts = countsByType[type];
-      const row = table.insertRow(-1);
+      const row = table.insertRow(1);
 
       const typeCell = row.insertCell(0);
       typeCell.innerHTML = type;
@@ -53,22 +54,24 @@ function processTrivyData(trivyData) {
   let hasFixedVersionCount = { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0 };
 
   trivyData.Results.forEach((result) => {
+    if (result.Vulnerabilities) {
       result.Vulnerabilities.forEach((vulnerability) => {
         if (vulnerability.Severity in severityCount) {
-            severityCount[vulnerability.Severity]++;
-          }
-          
-          if (vulnerability.Status === "affected") {
-            affectedCount[vulnerability.Severity]++;
-          } else {
-            notAffectedCount[vulnerability.Severity]++;
-          }
-    
-          if (vulnerability.FixedVersion) {
-            hasFixedVersionCount[vulnerability.Severity]++;
-          }
+          severityCount[vulnerability.Severity]++;
+        }
+
+        if (vulnerability.Status === "affected") {
+          affectedCount[vulnerability.Severity]++;
+        } else {
+          notAffectedCount[vulnerability.Severity]++;
+        }
+
+        if (vulnerability.FixedVersion) {
+          hasFixedVersionCount[vulnerability.Severity]++;
+        }
       });
-    });
+    }
+  });
 
   const summary = {
     SeverityCount: severityCount,
@@ -81,31 +84,31 @@ function processTrivyData(trivyData) {
 }
 
 function populateVulnerabilityMitigationsTable(data, containerId) {
-    const container = document.getElementById(containerId);
-    const table = document.createElement("table");
-    const thead = table.createTHead();
-    const tbody = table.createTBody();
+  const container = document.getElementById(containerId);
+  const table = document.createElement("table");
+  const thead = table.createTHead();
+  const tbody = table.createTBody();
 
-    const mapKeyToHeader = {
-        SeverityCount: "Total",
-        AffectedCount: "Unmitigated",
-        NotAffectedCount: "Mitigated",
-        HasFixedVersionCount: "Fix available",
-    }
+  const mapKeyToHeader = {
+    SeverityCount: "Total",
+    AffectedCount: "Unmitigated",
+    NotAffectedCount: "Mitigated",
+    HasFixedVersionCount: "Fix available",
+  };
 
-    const headerRow = thead.insertRow();
-    headerRow.insertCell().textContent = "Severity";
+  const headerRow = thead.insertRow();
+  headerRow.insertCell().textContent = "Severity";
+  for (const key in data) {
+    headerRow.insertCell().textContent = mapKeyToHeader[key];
+  }
+
+  for (const severity in data["SeverityCount"]) {
+    const dataRow = tbody.insertRow();
+    dataRow.insertCell().textContent = severity;
     for (const key in data) {
-        headerRow.insertCell().textContent = mapKeyToHeader[key];
+      dataRow.insertCell().textContent = data[key][severity];
     }
+  }
 
-    for (const severity in data["SeverityCount"]) {
-        const dataRow = tbody.insertRow();
-        dataRow.insertCell().textContent = severity;
-        for (const key in data) {
-            dataRow.insertCell().textContent = data[key][severity];
-        }
-    }
-
-    container.appendChild(table);
+  container.appendChild(table);
 }
