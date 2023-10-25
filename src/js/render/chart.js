@@ -132,3 +132,53 @@ function countVulnerabilitiesByPackage(trivyData) {
 
   return vulnerabilityCountByPackage;
 }
+
+function createBarChart(data) {
+  const labels = Object.keys(data);
+  const values = Object.values(data);
+
+  const ctx = document.getElementById("barChart").getContext("2d");
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Vulnerabilities found",
+          data: values,
+          backgroundColor: [
+            "rgba(75, 192, 192, 0.5)",
+            "rgba(255, 99, 132, 0.5)",
+            "rgba(255, 206, 86, 0.5)",
+            "rgba(54, 162, 235, 0.5)",
+            "rgba(153, 102, 255, 0.5)",
+            "rgba(255, 159, 64, 0.5)",
+          ],
+          // borderColor: "#eb5e28",
+          borderWidth: 0,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  });
+}
