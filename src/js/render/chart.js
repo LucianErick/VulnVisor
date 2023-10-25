@@ -112,3 +112,23 @@ function populateVulnerabilityMitigationsTable(data, containerId) {
 
   container.appendChild(table);
 }
+
+function countVulnerabilitiesByPackage(trivyData) {
+  const vulnerabilityCountByPackage = {};
+
+  trivyData.Results.forEach((result) => {
+    if (result.Vulnerabilities) {
+      result.Vulnerabilities.forEach((vulnerability) => {
+        const packageName = vulnerability.PkgName;
+
+        if (vulnerabilityCountByPackage[packageName]) {
+          vulnerabilityCountByPackage[packageName]++;
+        } else {
+          vulnerabilityCountByPackage[packageName] = 1;
+        }
+      });
+    }
+  });
+
+  return vulnerabilityCountByPackage;
+}

@@ -75,6 +75,9 @@ function base() {
   const data = processTrivyData(trivyData);
   populateVulnerabilityMitigationsTable(data, "mitigatedVulnerabilityTable");
 
+  const vulnerabilitiesByPkg = countVulnerabilitiesByPackage(trivyData);
+  createBarChart(vulnerabilitiesByPkg);  
+
   if (trivyData.Results) {
     const { resultTables, secretsTables } = getResultTablesByResults(
       trivyData.Results
