@@ -20,41 +20,31 @@
 
   <body>
     <div class="wrapper">
-      <div>
-        Mostrar árvore de dependências Mostrar listagem de pacotes Histórico de
-        scanners: limitado a 10? Sumário de vulnerabilidades: Quantas
-        vulnerabilidades foram encontradas dividido por tipo (gráfico de pizza)
-        Gráfico de tempo: mostrando evolução do scanner Listagem das
-        vulnerabilidades com detalhamento na descrição de cada uma e filtragem
-        (adptar o que eu já tenho) Implementar opção de marcar vulnerabilidades
-        corrigidas (isso deve dar trabalho) Opção de exportar dados para csv ou
-        json (isso deve ser fácil de fazer);
-      </div>
-
-      <canvas id="myChart" width="400" height="200"></canvas>
-
-      <table id="groupSeverityBySource" class="severityTable">
-        <thead>
-          <tr>
-            <th>Source</th>
-            <th>LOW</th>
-            <th>MEDIUM</th>
-            <th>HIGH</th>
-            <th>CRITICAL</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <div id="mitigatedVulnerabilityTable"></div>
-
       <main id="root">
+        <div class="table1">
+          <table id="groupSeverityBySource" class="display">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>LOW</th>
+                <th>MEDIUM</th>
+                <th>HIGH</th>
+                <th>CRITICAL</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="table2">
+          <div id="mitigatedVulnerabilityTable"></div>
+        </div>
         <div class="main-header">
           <h1 id="report-title">
             Trivy Report - <span class="report-title__target"></span> -
             <span id="title-time"></span>
           </h1>
         </div>
+
         <div class="filter_bar">
           <input
             type="text"
@@ -65,22 +55,20 @@
           <div class="tabs">
             <button id="cves-tab" class="tab-button active">CVE's</button>
             <button id="packages-tab" class="tab-button">Packages</button>
-            <button id="tree-tab" class="tab-button active">
-              Dependency Tree
-            </button>
+            <button id="tree-tab" class="tab-button">Dependency Tree</button>
             <button id="secrets-tab" class="tab-button">Secrets</button>
           </div>
         </div>
       </main>
-      <template id="top-vuln">
+      <!-- <template id="top-vuln">
         <h2 class="top-vuln-title"></h2>
         <div class="tables-container"></div>
-      </template>
+      </template> -->
 
-      <template id="top-misc">
+      <!-- <template id="top-misc">
         <h2 class="top-misc-title"></h2>
         <div class="tables-container"></div>
-      </template>
+      </template> -->
       <template id="table">
         <div class="header">
           <h3 class="header__title ta-center"></h3>

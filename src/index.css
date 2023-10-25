@@ -16,6 +16,7 @@
 }
 body,
 html {
+  max-height: 100vh;
   font-size: 10px;
   background-color: var(--background);
   color: var(--rock-dark);
@@ -25,7 +26,9 @@ html {
   padding: 0 0 4rem 0;
 }
 .wrapper {
-  width: 90vw;
+  height: 100vh;
+  width: 95vw;
+  padding: 1.6rem 0;
 }
 .container {
   width: fit-content;
@@ -72,6 +75,7 @@ th {
 table {
   table-layout: fixed;
   width: 100%;
+  height: fit-content;
   border: 1px solid var(--border);
   font-size: 1.2rem;
 }
@@ -136,11 +140,18 @@ ul {
   box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.2);
 }
 .filter_bar {
-  margin: 4.8rem 0 3.2rem 0;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: last baseline;
+  width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
+
+.tabs {
+  margin-left: 2.4rem;
+}
+
 .filterable:hover {
   background-color: #f1f1f1;
 }
@@ -262,12 +273,14 @@ ul {
   position: absolute;
   top: calc(var(--spacing) / -2);
   left: -2px;
-  width: calc(var(--spacing) + 8px);
-  height: calc(var(--spacing) + -1px);
+  width: calc(var(--spacing));
+  height: calc(var(--spacing) + 8px);
   border: solid var(--dark-beige);
   border-width: 0 0 2px 2px;
 }
 .tree .dependency-tree-node__title {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
   display: block;
 }
 .tree .dependency-tree-node__title::-webkit-details-marker,
@@ -289,19 +302,21 @@ ul {
   height: 22px;
   text-align: center;
   border-radius: 5px;
-  line-height: 11px;
+  line-height: 14px;
   cursor: pointer;
   position: relative;
   z-index: 2;
 }
 .tree > li > ul.dependency-tree-node__children.original > li > span {
   color: var(--orange);
+  font-weight: 600;
 }
 .dependency-tree__title {
+  font-size: 1.4rem;
   margin-bottom: 0;
 }
 .dependency-tree__description {
-  font-size: 2rem;
+  font-size: 1.4rem;
 }
 .tab-button {
   font-size: 1.4rem;
@@ -311,9 +326,8 @@ ul {
   padding: 0.8rem 1.6rem;
   cursor: pointer;
   color: var(--rock-base);
-  transition: all ease-in 0.08s;
+  transition: all ease-in 80ms;
 }
-
 .tab-button:hover {
   color: var(--orange);
 }
@@ -323,6 +337,13 @@ ul {
   border-bottom: 4px solid var(--orange);
 }
 .secret-results {
+  display: none;
+}
+.dependency-tree__container {
+  background-color: var(--white);
+  margin-top: 1.6rem;
+  padding: 1.2rem 1.6rem;
+  border-radius: 0.8rem;
   display: none;
 }
 .nav-header {
@@ -339,9 +360,7 @@ ul {
   align-items: center;
   justify-content: center;
 }
-.tabs {
-  margin-left: 4rem;
-}
+
 .main-header {
   height: 7vh;
   background-color: var(--white);
@@ -351,26 +370,43 @@ ul {
   justify-content: center;
   color: var(--rock-base);
   font-size: 0.8rem;
+  display: none;
+}
+
+.tables {
+  height: 24rem;
+  overflow-y: scroll;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 .hidden {
   display: none;
 }
-
 .show {
   display: block;
 }
-
 .pkgs-table {
+  margin-top: 1.6rem;
   display: none;
 }
-
 .pkgs-table td {
   color: var(--rock-base);
 }
 
-.pkg-key-version {}
-.pkg-key-name {}
-.pkg-key-version {}
-.pkg-key-src-name {}
-.pkg-key-src-version {}
+.table1 {
+  height: fit-content;
+}
+
+.table2 {
+  grid-column: 1;
+}
+
+#root {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  column-gap: 2.4rem;
+  row-gap: 0.8rem;
+}
