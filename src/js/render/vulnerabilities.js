@@ -1,7 +1,11 @@
 function getEmptyResult() {
-  const resultTable = tableTemplate.content.cloneNode(true);
+  if (tableTemplate) {
+    const resultTable = tableTemplate.content.cloneNode(true);
+  }
   const resultTableBody = resultTable.querySelector("tbody");
-  const emptyVulns = emptyVulnsTemplate.content.cloneNode(true);
+  if (emptyVulnsTemplate) {
+    const emptyVulns = emptyVulnsTemplate.content.cloneNode(true);
+  }
   resultTableBody.append(emptyVulns);
   return resultTable;
 }
