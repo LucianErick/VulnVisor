@@ -1,13 +1,11 @@
 function getEmptyResult() {
-  if (tableTemplate) {
+  if (tableTemplate && emptyVulnsTemplate) {
     const resultTable = tableTemplate.content.cloneNode(true);
-  }
-  const resultTableBody = resultTable.querySelector("tbody");
-  if (emptyVulnsTemplate) {
+    const resultTableBody = resultTable.querySelector("tbody");
     const emptyVulns = emptyVulnsTemplate.content.cloneNode(true);
+    resultTableBody.append(emptyVulns);
+    return resultTable;
   }
-  resultTableBody.append(emptyVulns);
-  return resultTable;
 }
 
 function getResultTablesByResults(resultsData) {
