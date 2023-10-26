@@ -15,6 +15,13 @@
   <body>
     <div class="wrapper">
       <main id="root">
+        <div id="severityChart">
+          <h1>Vulnerability Chart</h1>
+          <select id="sourceSelector">
+            <option value="total">Total</option>
+          </select>
+          <canvas id="vulnerabilityChart" width="400" height="400"></canvas>
+        </div>
         <div class="table1">
           <table id="groupSeverityBySource" class="display">
             <thead>
@@ -32,7 +39,7 @@
         <div class="table2">
           <div id="mitigatedVulnerabilityTable"></div>
         </div>
-        <div class="main-header" style="display:none">
+        <div class="main-header" style="display: none">
           <h1 id="report-title">
             Trivy Report - <span class="report-title__target"></span> -
             <span id="title-time"></span>
@@ -41,183 +48,5 @@
         <div class="chartContainer">
           <canvas id="barChart"></canvas>
         </div>
-        <div class="filter_bar">
-          <input type="text" placeholder="Search a word or number" title="Search by package, vulnerability id, severity, installed version" class="filter_bar__filter_name search">
-          <div class="tabs">
-            <button id="cves-tab" class="tab-button active">CVE's</button>
-            <button id="packages-tab" class="tab-button">Packages</button>
-            <button id="tree-tab" class="tab-button">Dependency Tree</button>
-            <button id="secrets-tab" class="tab-button">Secrets</button>
-          </div>
-        </div>
       </main>
-      <!-- <template id="top-vuln">
-        <h2 class="top-vuln-title"></h2>
-        <div class="tables-container"></div>
-      </template> -->
-
-      <!-- <template id="top-misc">
-        <h2 class="top-misc-title"></h2>
-        <div class="tables-container"></div>
-      </template> -->
-      <template id="table">
-        <div class="header">
-          <h3 class="header__title ta-center"></h3>
-        </div>
-        <div class="container">
-          <table>
-            <thead>
-              <tr class="sub-header">
-                <th data-type="string" data-sortable="true">
-                  <div class="th-centered">
-                    <span> Package </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                    </svg>
-                  </div>
-                </th>
-                <th data-type="string" data-sortable="true">
-                  <div class="th-centered">
-                    <span> Vulnerability ID </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                    </svg>
-                  </div>
-                </th>
-                <th data-type="string" data-sortable="false">
-                  <span> Description </span>
-                </th>
-                <th data-type="string" data-sortable="true">
-                  <div class="th-centered">
-                    <span> CVSS (v2) </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                    </svg>
-                  </div>
-                </th>
-                <th data-type="string" data-sortable="true">
-                  <div class="th-centered">
-                    <span> CVSS (v3) </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                    </svg>
-                  </div>
-                </th>
-                <th data-type="severity" data-sortable="true">
-                  <div class="th-centered">
-                    <span> Severity </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                    </svg>
-                  </div>
-                </th>
-                <th data-type="string" data-sortable="false">
-                  <span> Installed Version </span>
-                </th>
-                <th data-type="string" data-sortable="false">
-                  <span> Fixed Version </span>
-                </th>
-                <th data-type="string" data-sortable="false">
-                  <span> References </span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                    <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-                  </svg>
-                </th>
-              </tr>
-            </thead>
-            <tbody data-main="true" class="filterable"></tbody>
-          </table>
-        </div>
-      </template>
-      <template id="table-row">
-        <tr class="filterable">
-          <td class="pkg-name break-word"></td>
-          <td class="vuln"></td>
-          <td class="vuln-title"></td>
-          <td class="v2-score"></td>
-          <td class="v3-score"></td>
-          <td class="severity ta-center"></td>
-          <td class="pkg-version ta-center"></td>
-          <td class="fix-version"></td>
-          <td class="links" data-more-links="off"></td>
-        </tr>
-      </template>
-      <template id="vuln-link">
-        <a class="link" href target="_blank" rel="noopener"></a>
-      </template>
-      <template id="secret-results">
-        <div class="secret-results">
-          <h3 class="secret-results__title">
-            <span class="secret-results__title-target"></span>
-            <span class="secret-results__title-class"></span>
-          </h3>
-          <div class="secret-results__content"></div>
-        </div>
-      </template>
-      <template id="secret">
-        <div class="secret">
-          <div class="secret__head">
-            <span class="secret__severity"></span>
-            <span class="secret__type"></span>
-          </div>
-          <div class="secret__title"></div>
-          <div class="secret__src">
-            <span class="secret__src-file"></span>
-            <span class="secret__src-delimiter">:</span>
-            <span class="secret__src-lines"></span>
-          </div>
-          <div class="secret__code"></div>
-        </div>
-      </template>
-      <template id="secret__code-line">
-        <div class="secret__line">
-          <div class="secret__line-number"></div>
-          <div class="secret__line-code">
-            <pre></pre>
-          </div>
-        </div>
-      </template>
-      <template id="pkgs-table">
-        <table class="pkgs-table">
-          <thead>
-            <tr class="sub-header"></tr>
-          </thead>
-          <tbody data-main="true"></tbody>
-        </table>
-      </template>
-      <template id="table-head-cell">
-        <th data-type data-sortable>
-          <span class="table-head-cell__content"></span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-            <path fill="#444" d="M11 7H5l3-4zM5 9h6l-3 4z"/>
-          </svg>
-        </th>
-      </template>
-      <template id="table-body-row">
-        <tr class="filterable"></tr>
-      </template>
-      <template id="table-body-cell">
-        <td></td>
-      </template>
-      <template id="result-container">
-        <div class="tables"></div>
-      </template>
-
-      <template id="dependency-tree">
-        <div class="dependency-tree__container">
-          <h3 class="dependency-tree__description ta-center">
-            Dependency Origin Tree
-          </h3>
-          <h3 class="dependency-tree__title"></h3>
-          <ul class="tree"></ul>
-        </div>
-      </template>
-
-      <template id="dependency-tree-node">
-        <li class="dependency-tree-node__container">
-          <span class="dependency-tree-node__title"></span>
-          <ul class="dependency-tree-node__children original"></ul>
-          <ul class="dependency-tree-node__children collapsed"></ul>
-        </li>
-      </template>
       <script>
