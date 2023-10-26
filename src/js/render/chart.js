@@ -83,6 +83,58 @@ function processTrivyData(trivyData) {
   return summary;
 }
 
+function createSeverityChart(countsByType) {
+  document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById("vulnerabilityChart").getContext("2d");
+    let chart;
+
+    createDoughnutChart("total");
+
+    const sourceSelector = document.getElementById("sourceSelector");
+    for (const source in countsByType) {
+      sourceSelector.innerHTML += `<option value="${source}">${source}</option>`;
+    }
+
+    sourceSelector.addEventListener("change", (event) => {
+      createDoughnutChart(event.target.value);
+    });
+
+    function createDoughnutChart(source) {
+      if (chart) {
+        chart.destroy();
+      }
+
+      const data = countsByType[source];
+      const labels = Object.keys(data);
+      const values = Object.values(data);
+
+      chart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              data: values,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.7)",
+                "rgba(255, 159, 64, 0.7)",
+                "rgba(255, 205, 86, 0.7)",
+                "rgba(75, 192, 192, 0.7)",
+              ],
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: `Vulnerabilities by Severity - ${source}`,
+          },
+        },
+      });
+    }
+  });
+}
+
 function populateVulnerabilityMitigationsTable(data, containerId) {
   const container = document.getElementById(containerId);
   const table = document.createElement("table");

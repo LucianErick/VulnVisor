@@ -31,7 +31,7 @@ function getCvesTable() {
         table.className !== "pkgs-table" &&
         table.className !== "dependency-tree__container"
       ) {
-        table.style.display = "block";
+        table.style.display = "table";
       }
     });
   });
@@ -42,7 +42,7 @@ function getPkgsTable() {
   Object.values(tables).forEach((tableElement) => {
     Object.values(tableElement.children).forEach((table) => {
       if (table.className === "pkgs-table") {
-        table.style.display = "block";
+        table.style.display = "table";
       }
     });
   });

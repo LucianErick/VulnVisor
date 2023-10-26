@@ -23,7 +23,9 @@ function getResultTablesByResults(resultsData) {
     } else {
       // on empty/unhandled
       const emptyResult = getEmptyResult();
-      resultTables.push(emptyResult);
+      if (emptyResult) {
+        resultTables.push(emptyResult);
+      }
     }
   }
   return { resultTables, secretsTables };
