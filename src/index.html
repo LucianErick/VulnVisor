@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500&family=Open+Sans:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -20,47 +20,108 @@
 
   <body>
     <div class="wrapper">
-      <main id="root">
-        <div id="severityChart">
-          <h1>Vulnerability Chart</h1>
-          <select id="sourceSelector">
-            <option value="total">Total</option>
-          </select>
-          <canvas id="vulnerabilityChart" width="400" height="400"></canvas>
+      <div class="mainHeader">
+        <div class="logoContainer">
+          <h1>Vulnvisor</h1>
+          <div class="reportInfoContainer">
+            <span id="reportType"></span>
+            <span id="reportTitle"></span>
+            <select id="selectTypeTable">
+              <option value="vulnerabilities" selected>Vulnerabilities</option>
+              <option value="packages">Packages</option>
+              <option value="secrets">Secrets</option>
+            </select>
+          </div>
         </div>
-        <div class="table1">
-          <table id="groupSeverityBySource" class="display">
+        <div class="reportActionsContainer">
+          <button id="save-report-button">Save report</button>
+        </div>
+      </div>
+      <main id="root">
+        <div id="severityChartContainer">
+          <h1>Severity</h1>
+          <div class="subcontainer">
+            <select id="sourceSelector"></select>
+            <canvas id="vulnerabilityChart" width="100%" height="100%"></canvas>
+          </div>
+        </div>
+
+        <div id="mitigationsContainer">
+          <h1>Mitigations</h1>
+          <div class="subcontainer">
+            <div id="totalVulnerabilities">
+              <span id="text">Total</span>
+              <span id="value1"></span>
+            </div>
+            <div id="totalMitigations">
+              <span id="text">Mitigated</span>
+              <span id="value2"></span>
+            </div>
+            <div id="totalUnmitigations">
+              <span id="text">Unmitigated</span>
+              <span id="value3"></span>
+            </div>
+            <div id="fixAvailable">
+              <span id="text">Fix Available</span>
+              <span id="value4"></span>
+            </div>
+          </div>
+          <span id="createdAt"></span>
+        </div>
+
+        <div id="packagesChartContainer">
+          <h1>Summary</h1>
+          <div class="subcontainer">
+            <canvas id="packagesChart" width="100%" height="100%"></canvas>
+          </div>
+        </div>
+        <div id="vulnerabilitiesTable">
+          <button id="export-csv-button">Export to .csv</button>
+          <table id="vulnerabilityTable" class="display">
             <thead>
               <tr>
+                <th>PkgName</th>
+                <th>Title</th>
+                <th>VulnerabilityID</th>
+                <th>Installed Version</th>
+                <th>Fixed Version</th>
+                <th>CVSS2 Score</th>
+                <th>CVSS3 Score</th>
+                <th>Severity</th>
                 <th>Source</th>
-                <th>LOW</th>
-                <th>MEDIUM</th>
-                <th>HIGH</th>
-                <th>CRITICAL</th>
               </tr>
             </thead>
             <tbody></tbody>
           </table>
         </div>
-        <div class="table2">
-          <div id="mitigatedVulnerabilityTable"></div>
+        <div id="packagesTable">
+          <button id="export-csv-button2">Export to .csv</button>
+          <table id="packages-table" class="display">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Version</th>
+                <th>Source</th>
+                <th>Licenses</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
-        <div class="main-header" style="display: none">
-          <h1 id="report-title">
-            Trivy Report - <span class="report-title__target"></span> -
-            <span id="title-time"></span>
-          </h1>
-        </div>
-        <div class="chartContainer">
-          <canvas id="barChart"></canvas>
-        </div>
+        <div id="secretsContainer"></div>
       </main>
       <script>
         <!-- split second.html -->
       </script>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="http://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
       <script src="js/render/base.js"></script>
       <script src="js/render/chart.js"></script>
+      <script src="js/render/vulnerabilities.js"></script>
+      <script src="js/render/packages.js"></script>
+      <script src="js/render/secrets.js"></script>
+      <script src="js/tabs.js"></script>
     </div>
   </body>
 </html>

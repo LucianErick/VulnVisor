@@ -1,60 +1,19 @@
-// function fillResults(result) {
-//   const resultContainer = resultContainerTemplate.content.cloneNode(true);
-//   const tablesContainer = resultContainer.querySelector(".tables");
-//   const argsArray = args.split(" ");
-//   const allPkgsFlag = argsArray.includes("--list-all-pkgs");
-//   const depTreeFlag = argsArray.includes("--dependency-tree");
-//   if (result.Vulnerabilities) {
-//     const vulnerabilitiesTable = fillVulnerabilitiesTable(result);
-//     tablesContainer.append(vulnerabilitiesTable);
-//   }
+function generateReportTitle() {
+  const reportTitleSpan = document.getElementById("reportTitle");
+  reportTitleSpan.textContent = trivyData.ArtifactName;
+}
+function generateReportType() {
+  const reportTypeSpan = document.getElementById("reportType");
+  reportTypeSpan.textContent =
+    trivyData.ArtifactType === "filesystem" ? "Module" : "Image";
+}
 
-//   if (result.Packages) {
-//     if (allPkgsFlag) {
-//       const { pkgTable, pkgTableBody, pkgTableRows } = fillPkgTable(result);
-//       pkgTableBody.append(...pkgTableRows);
-//       tablesContainer.append(pkgTable);
-//     }
-//     if (depTreeFlag) {
-//       const dependencyTreeRoot = fillDependencyTree(result);
-//       tablesContainer.append(dependencyTreeRoot);
-//     }
-//   }
-
-//   /*filling table*/
-//   return resultContainer;
-// }
-
-// function renderCreatedAt() {
-//   if (!createdAt) {
-//     return console.error("Creation timestamp not loaded");
-//   }
-//   const titleTimeElem = document.querySelector("#title-time");
-//   titleTimeElem.innerHTML = new Date(createdAt * 1000).toLocaleString();
-//   document.title += " " + titleTimeElem.innerHTML;
-// }
-
-// function getReportTitle(trivyData) {
-//   if (trivyData.Results) {
-//     return trivyData.Results[0].Target;
-//   }
-//   if (trivyData.Vulnerabilities) {
-//     return trivyData.Vulnerabilities[0].Name;
-//   }
-// }
-
-// function getTopVulnerabilities() {
-//   return trivyData.Vulnerabilities.map((topVulnerability) => {
-//     const topVuln = topVulnTemplate.content.cloneNode(true);
-//     const topVulnTablesContainer = topVuln.querySelector(".tables-container");
-//     const topVulnHeader = topVuln.querySelector("h2");
-//     topVulnHeader.textContent = `${topVulnerability.Name} (${topVulnerability.Kind})`;
-
-//     const { resultTables } = getResultTablesByResults(topVulnerability.Results);
-//     topVulnTablesContainer.append(...resultTables);
-//     return topVuln;
-//   });
-// }
+function renderCreatedAt() {
+  const createdAtSpan = document.getElementById("createdAt");
+  createdAtSpan.textContent = `Generated at: ${new Date(
+    createdAt * 1000
+  ).toLocaleString()}`;
+}
 
 function base() {
   if (!trivyData) {
@@ -64,30 +23,28 @@ function base() {
   if (!root) {
     return console.error("Can't find root");
   }
-  // const reportTitleTarget = reportTitleTemplate.querySelector(
-  //   ".report-title__target"
-  // );
-  // reportTitleTarget.textContent = getReportTitle(trivyData);
 
   const count = countVulnerabilitiesBySeverityAndType(trivyData);
-  createSeverityChart(count)
+  createSeverityChart(count);
 
   const data = processTrivyData(trivyData);
-  populateVulnerabilityMitigationsTable(data, "mitigatedVulnerabilityTable");
+  updatedMitigationsTable(data);
 
   const vulnerabilitiesByPkg = countVulnerabilitiesByPackage(trivyData);
-  createBarChart(vulnerabilitiesByPkg);  
+  createPackagesChart(vulnerabilitiesByPkg);
 
-  // if (trivyData.Results) {
-  //   const { resultTables, secretsTables } = getResultTablesByResults(
-  //     trivyData.Results
-  //   );
-  //   if (resultTables) root.append(...resultTables);
-  //   if (secretsTables) root.append(...secretsTables);
-  // } else if (trivyData.Vulnerabilities) {
-  //   const topVulns = getTopVulnerabilities();
-  //   root.append(...topVulns);
-  // }
+  fillVulnerabilityTable(trivyData);
+
+  createPackagesTable(trivyData.Results);
+
+  toggleTablesVisibility();
+
+  if (trivyData.Results) {
+    fillSecretsContainer(getSecretsTable(trivyData.Results));
+  }
+
+  generateReportTitle();
+  generateReportType();
   renderCreatedAt();
 }
 

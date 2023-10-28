@@ -1,162 +1,75 @@
-function insertAfter(referenceNode, newNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+function saveReportToLocalStorage() {
+  if (typeof trivyData === "object" && trivyData !== null) {
+    const key = "trivyData-" + trivyData.ArtifactName + "-" + createdAt;
+    const dataToSave = JSON.stringify(trivyData);
+    localStorage.setItem(key, dataToSave);
+    alert("Report saved to localStorage with key: " + key);
+  } else {
+    alert("No valid trivyData object to save.");
   }
-  
-  const severityOrder = {
-    UNKNOWN: { order: 5 },
-    LOW: { order: 4 },
-    MEDIUM: { order: 3 },
-    HIGH: { order: 2 },
-    CRITICAL: { order: 1 },
-  };
-  
-  function attachLinksInteractivity() {
-    document.querySelectorAll("td.links").forEach(function (linkCell) {
-      const links = [].concat.apply([], linkCell.querySelectorAll("a"));
-      [].sort.apply(links, function (a, b) {
-        return a.href > b.href ? 1 : -1;
-      });
-      links.forEach(function (link, idx) {
-        if (links.length > 0 && 0 === idx) {
-          const toggleLink = document.createElement("a");
-          toggleLink.innerText = "Show references";
-          toggleLink.href = "#toggleMore";
-          toggleLink.setAttribute("class", "toggle-more-links");
-          linkCell.appendChild(toggleLink);
-        }
-        linkCell.appendChild(link);
-      });
+}
+
+function exportToCSV() {
+  const table = document.getElementById("vulnerabilityTable");
+
+  const csvData = [];
+
+  const rows = table.querySelectorAll("tr");
+
+  rows.forEach((row) => {
+    const rowData = [];
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell) => {
+      rowData.push(cell.innerText);
     });
-  
-    document
-        .querySelectorAll("a.toggle-more-links")
-        .forEach(function (toggleLink) {
-          toggleLink.onclick = function () {
-            const expanded =
-                toggleLink.parentElement.getAttribute("data-more-links");
-            toggleLink.parentElement.setAttribute(
-                "data-more-links",
-                "on" === expanded ? "off" : "on"
-            );
-            expanded ? toggleLink.innerText = "Hide references" : 'Show references'
-            return false;
-          };
-        });
-  }
-  
-  function attachFilterInteractivity() {
-    const filterBar = document.querySelector(".filter_bar");
-    const nameFilter = filterBar.querySelector(".filter_bar__filter_name");
-    const filterable = document.querySelectorAll(".filterable");
-    const cellClasses = [
-      ".pkg-name",
-      ".vuln",
-      ".vuln-title",
-      ".v2-score",
-      ".v3-score",
-      ".severity",
-      ".fix-version",
-      ".pkg-version",
-      ".pkg-key-name",
-      ".pkg-key-version",
-      ".pkg-key-src-name",
-      ".pkg-key-src-version",
-    ];
-  
-    function applyFilters(filterValue) {
-      filterable.forEach((f) => {
-        const cellValues = cellClasses
-            .map((cl) => f.querySelector(cl))
-            .filter((cell) => cell !== null)
-            .map((cell) => cell.textContent || cell.innerText);
-  
-        const condition = cellValues.some((cellValue) =>
-            cellValue.toUpperCase().includes(filterValue.toUpperCase())
-        );
-  
-        f.style.display = condition ? "" : "none";
-      });
-    }
-  
-    nameFilter.addEventListener("keyup", (e) => {
-      applyFilters(e.target.value);
-    });
-  }
-  
-  function attachSortInteractivity() {
-    let colIx = -1;
-    const tables = document.querySelectorAll("table");
-    const sortTable = (tableIx, cellIndex, type, isSorded) => {
-      const table = tables[tableIx];
-      const tbody = table.querySelector('tbody[data-main="true"]');
-      const thead = table.querySelector("thead");
-      const inv = (val) => (isSorded ? -val : val);
-      const compare = (a, b) => {
-        const rowA = a.cells[cellIndex].innerHTML;
-        const rowB = b.cells[cellIndex].innerHTML;
-        if (type === "string") {
-          if (rowA < rowB) return inv(-1);
-          if (rowA > rowB) return inv(1);
-          return 0;
-        }
-        if (type === "severity") {
-          const orderA = severityOrder[rowA].order;
-          const orderB = severityOrder[rowB].order;
-          if (orderA < orderB) return inv(-1);
-          if (orderA > orderB) return inv(1);
-          return 0;
-        }
-      };
-      let rows = Array(...tbody.rows);
-      rows.sort(compare);
-      table.removeChild(tbody);
-      rows.forEach((row) => {
-        tbody.appendChild(row);
-      });
-      insertAfter(thead, tbody);
-    };
-    tables.forEach((table, tableIx) => {
-      table.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const el = e.target;
-        const type = el.getAttribute("data-type");
-        const sortable = el.getAttribute("data-sortable") === "true";
-        if (el.nodeName !== "TH" || !sortable) return;
-        const cellIndex = el.cellIndex;
-        sortTable(tableIx, cellIndex, type, colIx === cellIndex);
-        colIx = colIx === cellIndex ? -1 : cellIndex;
-      });
-    });
-  }
-  
-  function attachDependencyTreeInteractivity() {
-    const collapsable = document.querySelectorAll(".dependency-tree-node__dots");
-  
-    collapsable.forEach((col) => {
-      col.addEventListener("click", () => {
-        const topParent = col.closest(
-            ".tree > li > ul.dependency-tree-node__children.original > .dependency-tree-node__container"
-        );
-        let original, collapsed;
-        for (let i = 0; i < topParent.children.length; i++) {
-          if (topParent.children[i].classList.contains("original")) {
-            original = topParent.children[i];
-            continue;
-          }
-          if (topParent.children[i].classList.contains("collapsed")) {
-            collapsed = topParent.children[i];
-          }
-        }
-        original.classList.remove("hidden");
-        collapsed.classList.add("hidden");
-      });
-    });
-  }
-  
-  document.addEventListener("DOMContentLoaded", () => {
-    attachLinksInteractivity();
-    attachSortInteractivity();
-    attachFilterInteractivity();
-    attachDependencyTreeInteractivity();
+    csvData.push(rowData.join(","));
   });
-  
+
+  const csvContent = "data:text/csv;charset=utf-8," + csvData.join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute(
+    "download",
+    `vulnerability_table_${trivyData.ArtifactName}.csv`
+  );
+
+  link.click();
+}
+
+function exportToCSV2() {
+  const table = document.getElementById("packagesTable");
+
+  const csvData = [];
+
+  const rows = table.querySelectorAll("tr");
+
+  rows.forEach((row) => {
+    const rowData = [];
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell) => {
+      rowData.push(cell.innerText);
+    });
+    csvData.push(rowData.join(","));
+  });
+
+  const csvContent = "data:text/csv;charset=utf-8," + csvData.join("\n");
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `packages_table_${trivyData.ArtifactName}.csv`);
+
+  link.click();
+}
+
+document
+  .getElementById("export-csv-button")
+  .addEventListener("click", exportToCSV);
+
+document
+  .getElementById("export-csv-button2")
+  .addEventListener("click", exportToCSV2);
+
+document
+  .getElementById("save-report-button")
+  .addEventListener("click", saveReportToLocalStorage);

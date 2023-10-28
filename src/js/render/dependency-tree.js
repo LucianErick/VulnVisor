@@ -170,7 +170,6 @@ function buildDependencyTreeDOM(topNode, recursionDepth = 0) {
       ...buildDependencyTreeDOM(node, recursionDepth)
     );
     if (recursionDepth === 1) {
-      // required for collapsing elements
       return { node, nodeDOM: dependencyTreeNode };
     } else {
       return dependencyTreeNode;

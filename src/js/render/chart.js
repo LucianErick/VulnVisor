@@ -1,6 +1,12 @@
 function countVulnerabilitiesBySeverityAndType(trivyData) {
   const result = trivyData.Results;
   const countsByType = {};
+  let total = {
+    LOW: 0,
+    MEDIUM: 0,
+    HIGH: 0,
+    CRITICAL: 0,
+  };
 
   result.forEach((entry) => {
     const type = entry.Type;
@@ -19,11 +25,12 @@ function countVulnerabilitiesBySeverityAndType(trivyData) {
       vulnerabilities.forEach((vulnerability) => {
         const severity = vulnerability.Severity;
         countsByType[type][severity]++;
+        total[severity]++;
       });
     }
   });
 
-  return countsByType;
+  return { ...countsByType, total };
 }
 
 function updateTableWithCounts(countsByType) {
@@ -51,7 +58,12 @@ function processTrivyData(trivyData) {
   let severityCount = { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0 };
   let affectedCount = { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0 };
   let notAffectedCount = { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0 };
-  let hasFixedVersionCount = { LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0 };
+  let hasFixedVersionCount = {
+    LOW: 0,
+    MEDIUM: 0,
+    HIGH: 0,
+    CRITICAL: 0,
+  };
 
   trivyData.Results.forEach((result) => {
     if (result.Vulnerabilities) {
@@ -79,90 +91,106 @@ function processTrivyData(trivyData) {
     NotAffectedCount: notAffectedCount,
     HasFixedVersionCount: hasFixedVersionCount,
   };
-
   return summary;
 }
 
-function createSeverityChart(countsByType) {
-  document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById("vulnerabilityChart").getContext("2d");
-    let chart;
+function sumObjValues(obj) {
+  let total = 0;
+  Object.values(obj).forEach((item) => {
+    total += item;
+  });
+  return total;
+}
 
-    createDoughnutChart("total");
+function updateSpanValue(spanId, value) {
+  const span = document.getElementById(spanId);
+  if (span) {
+    span.textContent = value.toString();
+  }
+}
 
-    const sourceSelector = document.getElementById("sourceSelector");
-    for (const source in countsByType) {
-      sourceSelector.innerHTML += `<option value="${source}">${source}</option>`;
-    }
-
-    sourceSelector.addEventListener("change", (event) => {
-      createDoughnutChart(event.target.value);
-    });
-
-    function createDoughnutChart(source) {
-      if (chart) {
-        chart.destroy();
-      }
-
-      const data = countsByType[source];
-      const labels = Object.keys(data);
-      const values = Object.values(data);
-
-      chart = new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              data: values,
-              backgroundColor: [
-                "rgba(255, 99, 132, 0.7)",
-                "rgba(255, 159, 64, 0.7)",
-                "rgba(255, 205, 86, 0.7)",
-                "rgba(75, 192, 192, 0.7)",
-              ],
-            },
-          ],
-        },
-        options: {
-          title: {
-            display: true,
-            text: `Vulnerabilities by Severity - ${source}`,
-          },
-        },
-      });
-    }
+function updatedMitigationsTable(responseData) {
+  const objProps = [
+    "SeverityCount",
+    "NotAffectedCount",
+    "AffectedCount",
+    "HasFixedVersionCount",
+  ];
+  objProps.forEach((item, index) => {
+    updateSpanValue(
+      `value${index + 1}`,
+      sumObjValues(responseData[item])
+    );
   });
 }
 
-function populateVulnerabilityMitigationsTable(data, containerId) {
-  const container = document.getElementById(containerId);
-  const table = document.createElement("table");
-  const thead = table.createTHead();
-  const tbody = table.createTBody();
+function createSeverityChart(countsByType) {
+  const ctx = document
+    .getElementById("vulnerabilityChart")
+    .getContext("2d");
 
-  const mapKeyToHeader = {
-    SeverityCount: "Total",
-    AffectedCount: "Unmitigated",
-    NotAffectedCount: "Mitigated",
-    HasFixedVersionCount: "Fix available",
-  };
+  let chart;
 
-  const headerRow = thead.insertRow();
-  headerRow.insertCell().textContent = "Severity";
-  for (const key in data) {
-    headerRow.insertCell().textContent = mapKeyToHeader[key];
-  }
-
-  for (const severity in data["SeverityCount"]) {
-    const dataRow = tbody.insertRow();
-    dataRow.insertCell().textContent = severity;
-    for (const key in data) {
-      dataRow.insertCell().textContent = data[key][severity];
+  const sourceSelector = document.getElementById("sourceSelector");
+  for (const source in countsByType) {
+    if (source === "total") {
+      sourceSelector.innerHTML += `<option value="${source}" selected>${source}</option>`;
+    } else if (source != "undefined") {
+      sourceSelector.innerHTML += `<option value="${source}">${source}</option>`;
     }
   }
 
-  container.appendChild(table);
+  createDoughnutChart("total");
+
+  sourceSelector.addEventListener("change", (event) => {
+    createDoughnutChart(event.target.value);
+  });
+
+  function createDoughnutChart(source) {
+    if (chart) {
+      chart.destroy();
+    }
+
+    const data = countsByType[source];
+    const labels = Object.keys(data);
+    const values = Object.values(data);
+
+    chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: values,
+            backgroundColor: [
+              "rgba(38, 70, 83, 0.9)",
+              "rgba(233, 196, 106, 0.9)",
+              "rgba(244, 162, 97, 0.9)",
+              "rgba(231, 111, 81, 0.9)",
+            ],
+          },
+        ],
+      },
+      options: {
+        cutout: 40,
+        title: {
+          display: true,
+        },
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              usePointStyle: true,
+              boxHeight: 8,
+              font: {
+                size: 10,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }
 
 function countVulnerabilitiesByPackage(trivyData) {
@@ -185,49 +213,57 @@ function countVulnerabilitiesByPackage(trivyData) {
   return vulnerabilityCountByPackage;
 }
 
-function createBarChart(data) {
-  const labels = Object.keys(data);
-  const values = Object.values(data);
+function sortAndFilterTop6(data) {
+  const sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]);
+  return sortedData.slice(0, 6);
+}
 
-  const ctx = document.getElementById("barChart").getContext("2d");
+function createPackagesChart(countsByPkg) {
+  const ctx = document.getElementById("packagesChart").getContext("2d");
 
-  new Chart(ctx, {
-    type: "bar",
+  let chart;
+  let labels = [];
+  let values = [];
+
+  const sortedData = sortAndFilterTop6(countsByPkg);
+
+  sortedData.forEach((item) => {
+    labels.push(item[0]);
+    values.push(item[1]);
+  });
+
+  chart = new Chart(ctx, {
+    type: "doughnut",
     data: {
       labels: labels,
       datasets: [
         {
-          label: "Vulnerabilities found",
           data: values,
           backgroundColor: [
-            "rgba(75, 192, 192, 0.5)",
-            "rgba(255, 99, 132, 0.5)",
-            "rgba(255, 206, 86, 0.5)",
-            "rgba(54, 162, 235, 0.5)",
-            "rgba(153, 102, 255, 0.5)",
-            "rgba(255, 159, 64, 0.5)",
+            "rgba(255, 89, 94, 0.9)",
+            "rgba(255, 202, 58, 0.9)",
+            "rgba(138, 201, 38, 0.9)",
+            "rgba(25, 130, 196, 0.9)",
+            "rgba(106, 76, 147, 0.9)",
+            "rgba(255, 219, 150, 0.9)",
           ],
-          // borderColor: "#eb5e28",
-          borderWidth: 0,
         },
       ],
     },
     options: {
+      cutout: 30,
+      title: {
+        display: true,
+      },
       plugins: {
         legend: {
-          display: false,
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          grid: {
-            display: false,
-          },
-        },
-        x: {
-          grid: {
-            display: false,
+          position: "right",
+          labels: {
+            usePointStyle: true,
+            boxHeight: 8,
+            font: {
+              size: 12,
+            },
           },
         },
       },
