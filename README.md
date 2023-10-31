@@ -1,6 +1,8 @@
 ### Installation:
 
-Obs: 
+Obs: You need to have Trivy installed on your machine
+
+#### Vulnvisor install
 
 - $ trivy plugin install <path to vulnvisor_vx.x.x_.tar.gz>
 
