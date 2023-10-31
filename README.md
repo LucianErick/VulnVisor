@@ -1,6 +1,6 @@
 ### Installation:
 
-- Obs: 
+Obs: 
 
 - $ trivy plugin install <path to vulnvisor_vx.x.x_.tar.gz>
 
